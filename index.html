@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="hi">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#100804" />
+    <meta
+      name="description"
+      content="CHHATH GOONJ — जहाँ हर सुर में आस्था है। Chhath ke geet, bina ruke."
+    />
+    <meta
+      property="og:title"
+      content="CHHATH GOONJ — जहाँ हर सुर में आस्था है"
+    />
+    <meta property="og:description" content="Chhath ke geet, bina ruke." />
+    <meta property="og:image" content="assets/chhath-sun-thumbnail.png" />
+    <meta name="twitter:card" content="summary" />
+    <link
+      rel="icon"
+      href="assets/chhath-sun-thumbnail.png"
+      type="image/png"
+      sizes="512x512"
+    />
+    <link rel="apple-touch-icon" href="assets/chhath-sun-thumbnail.png" />
+    <title>CHHATH GOONJ | Non-stop Chhath Melodies</title>
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="loader" id="loader">
+      <span class="loader-mark">☼</span><span>छठ महापर्व</span>
+    </div>
+
+    <main class="screen" id="top">
+      <section class="hero">
+        <div class="hero-media" aria-hidden="true">
+          <picture>
+            <source
+              media="(max-width: 720px)"
+              srcset="assets/chhath-mobile.png"
+            />
+            <img
+              src="assets/chhath-desktop.png"
+              alt="Chhath Puja at a riverside ghat"
+            />
+          </picture>
+        </div>
+        <div class="hero-shade"></div>
+        <div class="hero-vignette"></div>
+        <div class="grain"></div>
+        <div class="ambient cloud cloud-a"></div>
+        <div class="ambient cloud cloud-b"></div>
+        <div class="ambient leaf leaf-a"></div>
+        <div class="ambient leaf leaf-b"></div>
+        <div class="ambient garland garland-a"></div>
+        <div class="ambient garland garland-b"></div>
+        <div class="ambient smoke smoke-a"><i></i><i></i><i></i></div>
+        <div class="ambient diya-flame diya-flame-a" aria-hidden="true">
+          <i></i>
+        </div>
+        <div class="ambient diya-flame diya-flame-b" aria-hidden="true">
+          <i></i>
+        </div>
+        <div class="water-shimmer"></div>
+        <canvas id="particles"></canvas>
+
+        <header class="topbar">
+          <a class="brand" href="#top" aria-label="Chhath Goonj"
+            ><span class="brand-sun">☼</span><span>CHHATH GOONJ</span></a
+          >
+          <div class="time-card" aria-label="Current date and time">
+            <div class="time-main"><span id="clock">--:--:--</span></div>
+            <div class="time-meta">
+              <span id="todayDay">---</span><b>·</b
+              ><span id="todayDate">-- --- ----</span>
+            </div>
+          </div>
+          <div class="header-actions" aria-label="Listen on music platforms">
+            <a
+              class="platform-icon spotify-header-action"
+              href="https://open.spotify.com/playlist/7clXwyu1RCQUi7UuIqi4Vd"
+              target="_blank"
+              rel="noopener"
+              aria-label="Open CHHATH GOONJ playlist in Spotify"
+              title="Listen on Spotify"
+            >
+              <svg class="spotify-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" fill="currentColor" />
+                <path
+                  d="M7.2 9.25c3.35-1.02 7.8-.73 10.45.88"
+                  fill="none"
+                  stroke="#170a05"
+                  stroke-width="1.55"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M7.65 12.15c2.8-.72 6.35-.46 8.7.72"
+                  fill="none"
+                  stroke="#170a05"
+                  stroke-width="1.45"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M8.1 14.8c2.2-.48 4.85-.28 6.75.62"
+                  fill="none"
+                  stroke="#170a05"
+                  stroke-width="1.35"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </a>
+            <a
+              class="platform-icon youtube-header-action"
+              href="https://music.youtube.com/playlist?list=PLYQAtCJqa2Eg"
+              target="_blank"
+              rel="noopener"
+              aria-label="Open CHHATH GOONJ playlist in YouTube Music"
+              title="Listen on YouTube Music"
+            >
+              <svg
+                class="youtube-music-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="10" fill="currentColor" />
+                <path d="M10 8.6v6.8l5.6-3.4z" fill="#fff" />
+              </svg>
+            </a>
+          </div>
+        </header>
+
+        <div class="hero-ui">
+          <aside class="hero-devotional-quote" aria-label="Devotional thought">
+            <span class="quote-mark">“</span>
+            <p>छठी मईया के आशीष रहे,<br />हर आँगन में उजियारा रहे।</p>
+            <small>— छठी मईया के चरणों में कोटि-कोटि नमन 🪔🙏</small>
+          </aside>
+
+          <div class="listener-count" aria-live="polite">
+            <span class="listener-dot" aria-hidden="true"></span>
+            <span class="listener-copy"
+              ><strong id="listenerNumber">—</strong>
+              <span id="listenerLabel">Devotees Live</span></span
+            >
+            <span
+              class="live-frequency"
+              aria-label="Live frequency indicator"
+              title="Live frequency"
+            >
+              <i></i><i></i><i></i><i></i><i></i>
+            </span>
+          </div>
+
+          <aside class="countdown-card" aria-label="Chhath countdown">
+            <div class="countdown-topline">
+              <span class="countdown-icon">☼</span>
+              <div>
+                <small>CHHATH 2026</small
+                ><strong id="countdownTitle">SANDHYA ARGHYA</strong>
+              </div>
+              <span class="countdown-arrow">›</span>
+            </div>
+            <div class="countdown-grid">
+              <div><strong id="days">--</strong><span>DAYS</span></div>
+              <i></i>
+              <div><strong id="hours">--</strong><span>HRS</span></div>
+              <i></i>
+              <div><strong id="minutes">--</strong><span>MIN</span></div>
+              <i></i>
+              <div><strong id="seconds">--</strong><span>SEC</span></div>
+            </div>
+            <div class="countdown-meta">
+              <span id="countdownDate">15 NOV 2026</span><b>•</b
+              ><span id="countdownWhen">SUNSET</span>
+            </div>
+            <div class="countdown-choice-label">CHOOSE ARGHYA</div>
+            <div
+              class="countdown-tabs"
+              role="group"
+              aria-label="Choose an Arghya countdown"
+            >
+              <button
+                class="countdown-tab active"
+                data-target="sandhya"
+                type="button"
+                aria-pressed="true"
+              >
+                <span aria-hidden="true">☼</span
+                ><span class="tab-copy">Sandhya Arghya</span></button
+              ><button
+                class="countdown-tab"
+                data-target="morning"
+                type="button"
+                aria-pressed="false"
+              >
+                <span aria-hidden="true">☀</span
+                ><span class="tab-copy">Morning Arghya</span>
+              </button>
+            </div>
+          </aside>
+
+          <section
+            class="music-stack"
+            id="music"
+            aria-label="Chhath songs playlist"
+          >
+            <div
+              class="story-marquee"
+              aria-label="Chhath history and importance"
+            >
+              <span class="story-icon" id="storyIcon">🪔</span>
+              <div class="story-window">
+                <div class="story-track" id="storyTrack"><span></span></div>
+              </div>
+            </div>
+
+            <div
+              class="music-card playlist-card youtube-playlist-card"
+              id="playlistCard"
+            >
+              <div
+                class="youtube-player-host"
+                id="youtubePlayerHost"
+                aria-hidden="true"
+              ></div>
+              <div class="playlist-art" aria-hidden="true">
+                <span>☼</span><small>छठ</small>
+              </div>
+              <div class="playlist-copy">
+                <small>NOW PLAYING</small>
+                <strong id="ytSongTitle">छठ के गीत · Chhath Songs</strong>
+                <span id="ytSongMeta">Play दबाकर सुनिए</span>
+              </div>
+              <div
+                class="yt-controls"
+                aria-label="Chhath Goonj playback controls"
+              >
+                <button
+                  class="yt-icon-btn yt-prev"
+                  id="ytPrev"
+                  type="button"
+                  aria-label="Previous song"
+                  title="Previous song"
+                >
+                  ⏮
+                </button>
+                <button
+                  class="yt-icon-btn yt-back"
+                  id="ytBack"
+                  type="button"
+                  aria-label="Back 10 seconds"
+                  title="Back 10 seconds"
+                >
+                  ↶<small>10</small>
+                </button>
+                <button
+                  class="yt-play-main"
+                  id="ytPlay"
+                  type="button"
+                  aria-label="Play"
+                  title="Play"
+                >
+                  <span id="ytPlayIcon">▶</span>
+                </button>
+                <button
+                  class="yt-icon-btn yt-forward"
+                  id="ytForward"
+                  type="button"
+                  aria-label="Forward 10 seconds"
+                  title="Forward 10 seconds"
+                >
+                  ↷<small>10</small>
+                </button>
+                <button
+                  class="yt-icon-btn yt-next"
+                  id="ytNext"
+                  type="button"
+                  aria-label="Next song"
+                  title="Next song"
+                >
+                  ⏭
+                </button>
+              </div>
+              <div class="yt-progress-wrap">
+                <input
+                  id="ytProgress"
+                  class="yt-progress-range"
+                  type="range"
+                  min="0"
+                  max="1000"
+                  value="0"
+                  step="1"
+                  aria-label="Seek in song"
+                />
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-brand">
+          <strong>CHHATH GOONJ</strong><span>अविरल भक्ति प्रवाह</span>
+        </div>
+        <div class="footer-made">
+          Built with <span>♥</span> for छठी मईया – By Raman
+        </div>
+        <div class="footer-social">
+          <button
+            class="footer-share"
+            id="shareBtn"
+            type="button"
+            aria-label="Share CHHATH GOONJ"
+          >
+            <span>↗</span><b>Share</b>
+          </button>
+          <button
+            class="footer-donate"
+            id="footerDonateBtn"
+            type="button"
+            aria-label="Donate to CHHATH GOONJ"
+          >
+            <span>♡</span><b>Donate</b>
+          </button>
+        </div>
+      </footer>
+    </main>
+
+    <div class="modal-backdrop" id="shareModal" hidden>
+      <div
+        class="modal share-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="shareTitle"
+      >
+        <button
+          class="modal-close"
+          data-close="shareModal"
+          type="button"
+          aria-label="Close share card"
+        >
+          ×
+        </button>
+        <div class="modal-sun">☼</div>
+        <span class="modal-kicker">CHHATH GOONJ</span>
+        <h2 id="shareTitle">Share the Chhath Goonj</h2>
+        <p>भक्ति की यह गूंज, अपनों के साथ साझा करें 🙏</p>
+        <div class="share-url">
+          <input id="shareUrl" readonly aria-label="Website link" /><button
+            id="copyLink"
+            type="button"
+          >
+            Copy
+          </button>
+        </div>
+        <div
+          class="share-grid share-social-grid"
+          aria-label="Share on social media"
+        >
+          <a
+            class="social-whatsapp"
+            id="whatsappShare"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            aria-label="Share on WhatsApp"
+          >
+            <span class="social-icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347z"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M12 2C6.477 2 2 6.477 2 12c0 2.159.684 4.158 1.848 5.795L2.5 21.5l3.832-1.309A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm-8 10a8 8 0 1113.657 5.657L12 20a7.962 7.962 0 01-4.275-1.229l-.306-.183-2.272.776.786-2.207-.2-.318A7.962 7.962 0 014 12z"
+                />
+              </svg>
+            </span>
+            <b>WhatsApp</b>
+          </a>
+          <a
+            class="social-facebook"
+            id="facebookShare"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            aria-label="Share on Facebook"
+            ><span class="social-icon">f</span><b>Facebook</b></a
+          >
+          <a
+            class="social-telegram"
+            id="telegramShare"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            aria-label="Share on Telegram"
+            ><span class="social-icon">➤</span><b>Telegram</b></a
+          >
+          <a
+            class="social-x"
+            id="xShare"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            aria-label="Share on X"
+            ><span class="social-icon">𝕏</span><b>X</b></a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop" id="donateModal" hidden>
+      <div
+        class="modal donate-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="donateTitle"
+      >
+        <button
+          class="modal-close"
+          data-close="donateModal"
+          type="button"
+          aria-label="Close donation card"
+        >
+          ×
+        </button>
+        <div class="donate-lamp donate-sun" aria-hidden="true">☼</div>
+        <h2 id="donateTitle">जय छठी मईया🙏</h2>
+        <p class="donate-message">
+          'छठ गूंज' विज्ञापन-मुक्त और नि:शुल्क सेवा है। सर्वर और स्ट्रीमिंग खर्च
+          में सहायता के लिए आप स्वेच्छा से <strong>'सेवा सहयोग'</strong> कर सकते
+          हैं।
+        </p>
+        <div class="donate-qr-wrap">
+          <img
+            src="assets/donation-qr.jpg"
+            alt="CHHATH GOONJ PhonePe UPI QR code"
+            class="donate-qr"
+          />
+          <button
+            class="qr-download"
+            id="qrDownload"
+            type="button"
+            aria-label="Save QR code"
+            title="Save QR code"
+          >
+            ↓
+          </button>
+        </div>
+
+        <div class="upi-row">
+          <div>
+            <small>UPI ID</small>
+            <strong id="donateUpi">9583107283@ybl</strong>
+          </div>
+          <button
+            id="copyUpi"
+            type="button"
+            aria-label="Copy UPI ID"
+            title="Copy UPI ID"
+          >
+            ▢
+          </button>
+        </div>
+
+        <a
+          class="phonepe-pay"
+          id="donateLink"
+          href="upi://pay?pa=9583107283%40ybl&pn=CHHATH%20GOONJ"
+          aria-label="Pay with PhonePe"
+        >
+          <span class="phonepe-mark" aria-hidden="true">पे</span>
+          <span><b>PhonePe</b><small>Pay with UPI</small></span>
+          <span class="phonepe-arrow" aria-hidden="true">→</span>
+        </a>
+        <small class="secure-note"
+          >QR स्कैन करें या PhonePe से सीधे भुगतान करें।</small
+        >
+      </div>
+    </div>
+
+    <section class="intro" id="intro" aria-label="Chhath Goonj introduction">
+      <div class="intro-noise" aria-hidden="true"></div>
+      <div class="intro-grid" aria-hidden="true"></div>
+      <div class="intro-dust" id="introDust" aria-hidden="true"></div>
+
+      <div class="intro-topline">ॐ सूर्याय नमः</div>
+
+      <div class="sun-stage" aria-hidden="true">
+        <div class="sun-rays"></div>
+        <div class="sun-halo sun-halo-a"></div>
+        <div class="sun-halo sun-halo-b"></div>
+        <div class="sun-core"></div>
+        <div class="sun-reflection"></div>
+      </div>
+
+      <div class="intro-copy">
+        <div class="intro-brand">CHHATH</div>
+        <div class="intro-name">GOONJ</div>
+        <h1>जहाँ हर सुर में आस्था है</h1>
+        <p>Where every prayer becomes a song.</p>
+        <button
+          class="tune-in"
+          id="tuneIn"
+          type="button"
+          aria-label="Tune in to Chhath Goonj"
+        >
+          <span>📻 सुनिए</span><i>→</i>
+        </button>
+      </div>
+
+      <div class="intro-footer">
+        <span>छठ महापर्व ☀ · लोक आस्था 🙏🏻</span>
+        <span>THEKUA · GAANA · KELA</span>
+        <span>2026</span>
+      </div>
+
+      <div class="gold-wipe" aria-hidden="true"></div>
+    </section>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
