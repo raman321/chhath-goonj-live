@@ -3,6 +3,7 @@
 // across visitors. The anon key is safe to expose in a browser app when your
 // Supabase project is configured with appropriate public access policies.
 window.CHATH_GOONJ_CONFIG = {
-  supabaseUrl: 'https://YOUR-PROJECT.supabase.co',
-  supabaseAnonKey: 'YOUR_SUPABASE_ANON_KEY'
+  supabaseUrl: 'https://zvlhlqpbvvjirjbtsqdf.supabase.co',
+  supabasePublishableKey: 'sb_publishable_N7B2YDap1jXvhhrtOZqnHQ_3_tKWLlj'
 };
+
