@@ -16,22 +16,25 @@
       content="CHHATH GOONJ — जहाँ हर सुर में आस्था है"
     />
     <meta property="og:description" content="Chhath ke geet, bina ruke." />
-    <meta property="og:image" content="assets/chhath-sun-thumbnail.png" />
+    <meta property="og:image" content="assets/chhath-sun-thumbnail.png?v=2" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="CHHATH GOONJ golden sun thumbnail" />
     <meta name="twitter:card" content="summary" />
     <link
       rel="icon"
-      href="assets/chhath-sun-thumbnail.png"
+      href="assets/chhath-sun-thumbnail.png?v=2"
       type="image/png"
       sizes="512x512"
     />
-    <link rel="apple-touch-icon" href="assets/chhath-sun-thumbnail.png" />
+    <link rel="apple-touch-icon" href="assets/chhath-sun-thumbnail.png?v=2" />
     <title>CHHATH GOONJ | Non-stop Chhath Melodies</title>
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="loader" id="loader">
-      <span class="loader-mark">☼</span><span>छठ महापर्व</span>
+      <span class="loader-mark">☀</span><span>छठ महापर्व</span>
     </div>
 
     <main class="screen" id="top">
@@ -69,7 +72,7 @@
 
         <header class="topbar">
           <a class="brand" href="#top" aria-label="Chhath Goonj"
-            ><span class="brand-sun">☼</span><span>CHHATH GOONJ</span></a
+            ><span class="brand-sun"><img src="assets/chhath-sun-icon.png" alt="" /></span><span>CHHATH GOONJ</span></a
           >
           <div class="time-card" aria-label="Current date and time">
             <div class="time-main"><span id="clock">--:--:--</span></div>
@@ -79,39 +82,13 @@
             </div>
           </div>
           <div class="header-actions" aria-label="Listen on music platforms">
-            <a
-              class="platform-icon spotify-header-action"
-              href="https://open.spotify.com/playlist/7clXwyu1RCQUi7UuIqi4Vd"
-              target="_blank"
-              rel="noopener"
-              aria-label="Open CHHATH GOONJ playlist in Spotify"
-              title="Listen on Spotify"
-            >
-              <svg class="spotify-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" fill="currentColor" />
-                <path
-                  d="M7.2 9.25c3.35-1.02 7.8-.73 10.45.88"
-                  fill="none"
-                  stroke="#170a05"
-                  stroke-width="1.55"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M7.65 12.15c2.8-.72 6.35-.46 8.7.72"
-                  fill="none"
-                  stroke="#170a05"
-                  stroke-width="1.45"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M8.1 14.8c2.2-.48 4.85-.28 6.75.62"
-                  fill="none"
-                  stroke="#170a05"
-                  stroke-width="1.35"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </a>
+            <button
+              class="platform-icon songs-header-action"
+              id="openSongs"
+              type="button"
+              aria-label="छठ गीत सूची खोलें"
+              title="छठ गीत +"
+            >छठ गीत <b>+</b></button>
             <a
               class="platform-icon youtube-header-action"
               href="https://music.youtube.com/playlist?list=PLYQAtCJqa2Eg"
@@ -199,6 +176,12 @@
                 <span aria-hidden="true">☀</span
                 ><span class="tab-copy">Morning Arghya</span>
               </button>
+            </div>
+            <div class="festival-greeting" id="festivalGreeting" hidden>
+              <div class="festival-greeting-glow" aria-hidden="true">☀️</div>
+              <h2>जय छठी मईया! 🙌</h2>
+              <p>छठ पूजा की हार्दिक शुभकामनाएँ!</p>
+              <span>छठी मईया आपके जीवन में सुख, शांति, समृद्धि और खुशहाली लाएँ। 🙏</span>
             </div>
           </aside>
 
@@ -306,7 +289,7 @@
           <strong>CHHATH GOONJ</strong><span>अविरल भक्ति प्रवाह</span>
         </div>
         <div class="footer-made">
-          Built with <span>♥</span> for छठी मईया – By Raman
+          Built with <span>♥</span> for छठी मईया – By Raman Jha
         </div>
         <div class="footer-social">
           <button
@@ -328,6 +311,27 @@
         </div>
       </footer>
     </main>
+    <div class="festival-screen-fallers" id="festivalScreenFallers" aria-hidden="true" hidden></div>
+
+    <div class="modal-backdrop songs-modal-backdrop" id="songsModal" hidden>
+      <div class="modal songs-modal" role="dialog" aria-modal="true" aria-labelledby="songsTitle">
+        <button class="modal-close" data-close="songsModal" type="button" aria-label="गीत सूची बंद करें">×</button>
+        <div class="songs-modal-heading">
+          <span class="songs-modal-sun" aria-hidden="true">☀️</span>
+          <div class="songs-modal-heading-copy">
+            <span class="songs-modal-kicker">CHHATH GOONJ · PLAYLIST</span>
+            <h2 id="songsTitle">छठ गीत सूची</h2>
+            <p class="songs-modal-subtitle">अपना पसंदीदा छठ गीत चुनें और सुनना शुरू करें। 🙏</p>
+          </div>
+        </div>
+        <div class="song-list-status" id="songListStatus" aria-live="polite">गीतों की सूची लोड हो रही है…</div>
+        <div class="song-list" id="songList" role="list"></div>
+        <footer class="songs-modal-footer">
+          <p>मूल संगीत सामग्री का स्वामित्व उनके अधिकार धारकों और YouTube के पास है।</p>
+          <a href="https://music.youtube.com/playlist?list=PLYQAtCJqa2Eg" target="_blank" rel="noopener noreferrer">YouTube Music पर पूरी सूची खोलें <span aria-hidden="true">↗</span></a>
+        </footer>
+      </div>
+    </div>
 
     <div class="modal-backdrop" id="shareModal" hidden>
       <div
@@ -344,7 +348,7 @@
         >
           ×
         </button>
-        <div class="modal-sun">☼</div>
+        <div class="modal-sun">☀</div>
         <span class="modal-kicker">CHHATH GOONJ</span>
         <h2 id="shareTitle">Share the Chhath Goonj</h2>
         <p>भक्ति की यह गूंज, अपनों के साथ साझा करें 🙏</p>
@@ -433,7 +437,7 @@
         >
           ×
         </button>
-        <div class="donate-lamp donate-sun" aria-hidden="true">☼</div>
+        <div class="donate-lamp donate-sun" aria-hidden="true">☀</div>
         <h2 id="donateTitle">जय छठी मईया🙏</h2>
         <p class="donate-message">
           'छठ गूंज' विज्ञापन-मुक्त और नि:शुल्क सेवा है। सर्वर और स्ट्रीमिंग खर्च
@@ -493,7 +497,7 @@
       <div class="intro-grid" aria-hidden="true"></div>
       <div class="intro-dust" id="introDust" aria-hidden="true"></div>
 
-      <div class="intro-topline">ॐ सूर्याय नमः</div>
+      <div class="intro-topline"><img class="intro-sun-mark" src="assets/chhath-sun-icon.png" alt="" /> <span>ॐ सूर्याय नमः</span></div>
 
       <div class="sun-stage" aria-hidden="true">
         <div class="sun-rays"></div>

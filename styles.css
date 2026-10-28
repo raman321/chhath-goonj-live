@@ -2051,3 +2051,190 @@ button {
 @media(prefers-reduced-motion:reduce){
   .ambient.cloud,.ambient.leaf,.diya-flame-a,.diya-flame-b,.diya-flame i,.diya-flame:after{animation:none!important}
 }
+
+
+/* Requested additions: song picker, Chhath greeting, and falling festive petals. */
+.songs-header-action{
+  width:auto!important;min-width:96px;padding:0 13px!important;border-radius:999px!important;
+  color:#f7d58e;font:700 11px/1 "Noto Sans Devanagari","Nirmala UI",sans-serif!important;
+  letter-spacing:.01em;white-space:nowrap;cursor:pointer;
+}
+.songs-header-action b{font:700 17px/1 Manrope,system-ui,sans-serif;color:#ffe4a0;margin-left:3px}
+.songs-header-action:hover{color:#fff0c8}
+@media(max-width:720px){
+  .songs-header-action{min-width:88px!important;padding:0 10px!important;font-size:10px!important}
+}
+.countdown-card.is-festival-mode>*:not(.festival-greeting){display:none!important}
+.countdown-card .festival-greeting[hidden]{display:none!important}
+.countdown-card .festival-greeting{
+  position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;min-height:220px;padding:24px 19px 22px;overflow:hidden;text-align:center;
+  border:1px solid rgba(255,222,151,.30);border-radius:19px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,193,76,.16),transparent 66%),rgba(21,10,4,.25);
+  box-shadow:inset 0 1px rgba(255,255,255,.07),0 12px 35px rgba(0,0,0,.13);
+}
+.festival-greeting-glow{font-size:30px;line-height:1;filter:drop-shadow(0 0 15px rgba(255,198,74,.72));animation:festivalSunGlow 3.2s ease-in-out infinite}
+.festival-greeting h2{margin:0;color:#ffe3a0;font:700 clamp(20px,2vw,28px)/1.25 "Noto Sans Devanagari","Nirmala UI",sans-serif;text-shadow:0 0 20px rgba(243,178,64,.25)}
+.festival-greeting p{margin:0;color:#fff4d7;font:600 clamp(13px,1.25vw,17px)/1.5 "Noto Sans Devanagari","Nirmala UI",sans-serif}
+.festival-greeting>span{max-width:440px;color:rgba(255,243,215,.83);font:500 clamp(11px,1vw,14px)/1.75 "Noto Sans Devanagari","Nirmala UI",sans-serif}
+.festival-fallers{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}
+.festival-faller{position:absolute;top:-24px;left:var(--left);font-size:var(--size);opacity:0;animation:festivalFall var(--duration) linear var(--delay) infinite;filter:drop-shadow(0 0 5px rgba(255,210,119,.25))}
+@keyframes festivalFall{0%{transform:translate3d(0,-18px,0) rotate(0);opacity:0}12%{opacity:.9}80%{opacity:.72}100%{transform:translate3d(var(--drift),260px,0) rotate(260deg);opacity:0}}
+@keyframes festivalSunGlow{0%,100%{transform:scale(.96);opacity:.82}50%{transform:scale(1.08);opacity:1}}
+@media(max-width:720px){
+ .countdown-card .festival-greeting{min-height:175px;padding:17px 12px 16px;gap:6px;border-radius:15px}
+ .festival-greeting-glow{font-size:24px}.festival-greeting h2{font-size:19px}.festival-greeting p{font-size:12px}.festival-greeting>span{font-size:10px;line-height:1.65}
+}
+.songs-modal-backdrop{z-index:1005}
+.songs-modal{width:min(560px,calc(100vw - 28px))!important;max-height:min(82vh,760px);display:flex;flex-direction:column;padding:27px 24px 20px!important}
+.songs-modal .modal-sun{margin-bottom:5px}.songs-modal h2{font-family:"Noto Sans Devanagari","Nirmala UI",sans-serif;font-size:25px;margin:7px 0}
+.songs-modal p{margin-bottom:12px}
+.song-list-status{padding:10px 12px;color:rgba(255,239,204,.7);font:500 11px/1.5 "Noto Sans Devanagari","Nirmala UI",sans-serif}
+.song-list{display:flex;flex-direction:column;gap:5px;overflow:auto;overscroll-behavior:contain;min-height:80px;padding:2px 4px 8px}
+.song-list-item{display:grid;grid-template-columns:32px minmax(0,1fr) 26px;align-items:center;gap:10px;width:100%;min-height:48px;padding:8px 10px;border:1px solid rgba(255,224,162,.11);border-radius:12px;background:rgba(255,255,255,.025);color:#fff0d0;text-align:left;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.song-list-item:hover,.song-list-item:focus-visible{background:rgba(241,193,93,.10);border-color:rgba(255,224,162,.42);transform:translateY(-1px);outline:none}
+.song-list-number{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:rgba(241,193,93,.10);color:#f2c76f;font:700 10px Manrope,system-ui,sans-serif}
+.song-list-title{font:600 12px/1.45 "Noto Sans Devanagari","Nirmala UI",sans-serif;overflow-wrap:anywhere}
+.song-list-play{color:#f2c76f;font-size:15px;text-align:center}
+.songs-youtube-link{display:block;text-align:center;margin-top:8px;padding:10px;color:#f1c96c;text-decoration:none;font:600 10px Manrope,system-ui,sans-serif}
+@media(max-width:560px){.songs-modal{padding:24px 13px 14px!important}.songs-modal h2{font-size:22px}.song-list-item{min-height:45px;padding:7px 8px;gap:8px}.song-list-title{font-size:11px}}
+
+
+/* Chhath Goonj refinement: full-screen falling petals, quieter song modal, translucent player. */
+.festival-screen-fallers[hidden]{display:none!important}
+.festival-screen-fallers{position:fixed;inset:0;z-index:45;overflow:hidden;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .7s ease,visibility .7s ease}
+body.is-chhath-festival .festival-screen-fallers{opacity:1;visibility:visible}
+.festival-screen-faller{position:absolute;top:-36px;left:var(--left);font-style:normal;font-size:var(--size);line-height:1;opacity:0;filter:drop-shadow(0 0 6px rgba(255,206,116,.3));animation:festivalScreenFall var(--duration) linear var(--delay) infinite;will-change:transform,opacity}
+@keyframes festivalScreenFall{0%{transform:translate3d(0,-5vh,0) rotate(0deg);opacity:0}10%{opacity:.62}76%{opacity:.48}100%{transform:translate3d(var(--drift),112vh,0) rotate(var(--spin));opacity:0}}
+@media(prefers-reduced-motion:reduce){.festival-screen-faller{animation:none!important;display:none!important}.festival-screen-fallers{display:none!important}}
+
+/* One clear action on mobile: hide the external YouTube icon there. */
+@media(max-width:720px){
+  .youtube-header-action{display:none!important}
+  .header-actions{gap:0!important}
+  .songs-header-action{width:112px!important;min-width:112px!important;height:38px!important;padding:0 12px!important;border-radius:999px!important;font-size:11px!important;justify-content:center}
+}
+@media(max-width:390px){.songs-header-action{width:104px!important;min-width:104px!important;height:36px!important;font-size:10px!important}}
+
+/* Let the background, marquee and diya glow show through the compact player. */
+.youtube-playlist-card{background:linear-gradient(135deg,rgba(20,10,5,.55),rgba(20,11,7,.38))!important;backdrop-filter:blur(1.2px)!important;-webkit-backdrop-filter:blur(3px)!important;border-color:rgba(255,224,162,.32)!important;box-shadow:0 12px 34px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.08)!important}
+.youtube-playlist-card .youtube-player-host{opacity:.01!important}
+
+/* Minimal playlist modal: only song title and singer/channel are shown per row. */
+.songs-modal-backdrop{padding:16px!important;background:rgba(8,4,2,.72)!important;backdrop-filter:blur(15px)!important}
+.songs-modal{width:min(500px,calc(100vw - 28px))!important;max-height:min(78vh,680px)!important;padding:22px 20px 16px!important;border-radius:22px!important;background:linear-gradient(150deg,rgba(35,18,9,.96),rgba(13,7,4,.97))!important;border:1px solid rgba(241,201,112,.32)!important}
+.songs-modal:before{inset:7px;border-radius:16px;border-color:rgba(244,201,109,.08)}
+.songs-modal-heading{position:relative;z-index:1;display:flex;align-items:center;gap:12px;margin:0 0 9px;padding:0 34px 10px 2px;border-bottom:1px solid rgba(255,224,162,.12)}
+.songs-modal-sun{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:50%;font:28px/1 Georgia,serif;color:#f3c86b;background:rgba(241,193,93,.09);border:1px solid rgba(241,193,93,.17);text-shadow:0 0 15px rgba(243,200,107,.3)}
+.songs-modal-kicker{display:block;margin-bottom:3px;color:rgba(241,201,108,.68);font:600 8px/1.2 Manrope,system-ui,sans-serif;letter-spacing:.2em}
+.songs-modal h2{margin:0!important;font:700 22px/1.25 "Noto Sans Devanagari","Nirmala UI",sans-serif!important;color:#ffebbd!important}
+.songs-modal .modal-close{z-index:2;top:15px;right:15px}
+.song-list-status{padding:7px 3px 9px!important;color:rgba(255,239,204,.52)!important;font:500 9px/1.3 "Noto Sans Devanagari","Nirmala UI",sans-serif!important}
+.song-list{position:relative;z-index:1;gap:4px!important;min-height:60px!important;padding:0 2px 3px!important}
+.song-list-item{grid-template-columns:28px minmax(0,1fr) 20px!important;min-height:52px!important;gap:10px!important;padding:7px 9px!important;border-radius:11px!important;border:1px solid rgba(255,224,162,.075)!important;background:rgba(255,255,255,.025)!important}
+.song-list-item:hover,.song-list-item:focus-visible{background:rgba(241,193,93,.09)!important;border-color:rgba(255,224,162,.27)!important;transform:none!important}
+.song-list-number{width:27px!important;height:27px!important;border-radius:8px!important;background:rgba(241,193,93,.08)!important;font-size:9px!important}
+.song-list-copy{display:flex;flex-direction:column;gap:3px;min-width:0;text-align:left}
+.song-list-title{display:block!important;color:#fff0d0!important;font:600 12px/1.35 "Noto Sans Devanagari","Nirmala UI",sans-serif!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.song-list-artist{display:block;color:rgba(255,229,183,.59);font:500 9px/1.25 Manrope,"Noto Sans Devanagari",sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.song-list-play{font-size:12px!important;color:#e8be65!important}
+@media(max-width:560px){.songs-modal{padding:20px 12px 12px!important;max-height:78dvh!important}.songs-modal-heading{gap:9px}.songs-modal-sun{width:36px;height:36px;flex-basis:36px;font-size:24px}.songs-modal h2{font-size:20px!important}.song-list-item{min-height:48px!important;grid-template-columns:25px minmax(0,1fr) 18px!important;gap:8px!important;padding:6px 7px!important}.song-list-title{font-size:11px!important}.song-list-artist{font-size:8px}}
+
+/* Festival atmosphere: sunset petals for Sandhya, soft sunrise petals for Usha. */
+.festival-screen-faller{animation-name:festivalPetalDrift;filter:drop-shadow(0 2px 5px rgba(255,180,67,.34));transform-origin:center;}
+.festival-screen-faller[data-petal="flower"]{font-size:calc(var(--size) * 1.04);}
+.festival-screen-faller[data-petal="sparkle"]{font-size:calc(var(--size) * .78);}
+@keyframes festivalPetalDrift{
+  0%{transform:translate3d(0,-6vh,0) rotate(0deg) scale(.84);opacity:0}
+  9%{opacity:.76}
+  30%{transform:translate3d(calc(var(--sway) * -1),32vh,0) rotate(calc(var(--spin) * .28)) scale(1)}
+  62%{transform:translate3d(var(--sway),69vh,0) rotate(calc(var(--spin) * .66)) scale(.96);opacity:.58}
+  100%{transform:translate3d(var(--drift),112vh,0) rotate(var(--spin)) scale(.82);opacity:0}
+}
+body.is-sandhya-arghya .festival-screen-faller{filter:drop-shadow(0 0 7px rgba(255,174,65,.40));}
+body.is-sandhya-arghya .festival-screen-faller[data-petal="flower"]{animation-duration:calc(var(--duration) * .92);}
+body.is-sandhya-arghya .festival-screen-faller[data-petal="sparkle"]{color:#ffd779;text-shadow:0 0 9px rgba(255,193,72,.72);}
+body.is-usha-arghya .festival-screen-faller{filter:drop-shadow(0 0 5px rgba(255,222,150,.27));}
+body.is-usha-arghya .festival-screen-faller[data-petal="flower"]{animation-duration:calc(var(--duration) * 1.16);opacity:.78;}
+body.is-usha-arghya .festival-screen-faller[data-petal="sparkle"]{color:#ffe9ad;text-shadow:0 0 8px rgba(255,226,157,.52);}
+body.is-usha-arghya .festival-screen-faller:nth-child(3n){opacity:.55;}
+
+/* Complete the song modal with a calm devotional intro and a clear YouTube Music footer. */
+.songs-modal-heading{align-items:flex-start!important;gap:13px!important;margin-bottom:9px!important;padding:2px 36px 14px 2px!important;}
+.songs-modal-sun{width:46px!important;height:46px!important;flex-basis:46px!important;font-size:25px!important;background:radial-gradient(circle,rgba(255,211,113,.18),rgba(241,193,93,.045))!important;box-shadow:0 0 22px rgba(239,186,75,.08),inset 0 1px rgba(255,255,255,.08);}
+.songs-modal-heading-copy{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding-top:1px;}
+.songs-modal-kicker{color:#e7bd69!important;font-size:8px!important;letter-spacing:.17em!important;}
+.songs-modal h2{font-size:23px!important;letter-spacing:.01em;}
+.songs-modal-subtitle{margin:2px 0 0!important;color:rgba(255,239,207,.69)!important;font:500 11px/1.65 "Noto Sans Devanagari","Nirmala UI",sans-serif!important;}
+.songs-modal-footer{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:9px;margin-top:10px;padding:13px 7px 2px;border-top:1px solid rgba(255,224,162,.13);text-align:center;}
+.songs-modal-footer p{max-width:390px;margin:0!important;color:rgba(255,235,202,.48)!important;font:400 9px/1.65 "Noto Sans Devanagari","Nirmala UI",sans-serif!important;}
+.songs-modal-footer a{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:35px;padding:0 14px;border:1px solid rgba(241,201,108,.26);border-radius:999px;background:linear-gradient(135deg,rgba(241,193,93,.13),rgba(241,193,93,.045));color:#f3cd7b;text-decoration:none;font:600 10px/1.4 "Noto Sans Devanagari","Nirmala UI",sans-serif;transition:background .2s ease,border-color .2s ease,transform .2s ease;}
+.songs-modal-footer a:hover,.songs-modal-footer a:focus-visible{background:rgba(241,193,93,.18);border-color:rgba(241,201,108,.48);transform:translateY(-1px);outline:none;}
+.songs-modal-footer a span{font:700 13px/1 Manrope,system-ui,sans-serif;}
+@media(max-width:560px){
+ .songs-modal-heading{gap:10px!important;padding-right:30px!important;padding-bottom:12px!important;}
+ .songs-modal-sun{width:38px!important;height:38px!important;flex-basis:38px!important;font-size:22px!important;}
+ .songs-modal h2{font-size:20px!important;}
+ .songs-modal-subtitle{font-size:10px!important;line-height:1.55!important;}
+ .songs-modal-footer{gap:8px;margin-top:8px;padding-top:11px;}
+ .songs-modal-footer p{font-size:8px!important;}
+ .songs-modal-footer a{min-height:34px;padding:0 12px;font-size:9px;}
+}
+
+/* Festival-day greeting typography and spacing refinement. */
+.countdown-card.is-festival-mode{
+  padding:13px!important;
+  background:linear-gradient(145deg,rgba(43,21,9,.72),rgba(24,11,5,.62))!important;
+  border-color:rgba(255,224,162,.38)!important;
+}
+.countdown-card.is-festival-mode .festival-greeting{
+  min-height:0!important;
+  padding:25px 24px 24px!important;
+  gap:0!important;
+  border-radius:17px!important;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,193,76,.18),transparent 68%),linear-gradient(160deg,rgba(36,18,7,.34),rgba(17,9,5,.2))!important;
+}
+.countdown-card.is-festival-mode .festival-greeting-glow{
+  display:block;margin:0 0 13px!important;font-size:34px;line-height:1.1;
+  filter:drop-shadow(0 0 17px rgba(255,198,74,.78));
+}
+.countdown-card.is-festival-mode .festival-greeting h2{
+  margin:0!important;font-size:clamp(22px,2.05vw,29px)!important;line-height:1.45!important;
+  letter-spacing:.005em;padding:0 0 13px!important;
+  text-shadow:0 2px 14px rgba(243,178,64,.22),0 0 24px rgba(243,178,64,.16)!important;
+}
+.countdown-card.is-festival-mode .festival-greeting p{
+  width:100%;margin:0!important;padding:13px 0 12px!important;
+  border-top:1px solid rgba(255,224,162,.19);
+  color:#fff0c9!important;font-size:clamp(14px,1.3vw,17px)!important;line-height:1.75!important;
+}
+.countdown-card.is-festival-mode .festival-greeting>span{
+  display:block;max-width:390px;margin:0 auto!important;padding:0 2px!important;
+  color:rgba(255,243,220,.88)!important;font-size:clamp(12px,1.05vw,14px)!important;
+  line-height:1.9!important;letter-spacing:.005em;
+}
+@media(max-width:720px){
+  .countdown-card.is-festival-mode{padding:9px!important;border-radius:21px!important;}
+  .countdown-card.is-festival-mode .festival-greeting{padding:20px 15px 19px!important;border-radius:14px!important;}
+  .countdown-card.is-festival-mode .festival-greeting-glow{font-size:29px;margin-bottom:10px!important;}
+  .countdown-card.is-festival-mode .festival-greeting h2{font-size:clamp(19px,5.1vw,22px)!important;line-height:1.5!important;padding-bottom:11px!important;}
+  .countdown-card.is-festival-mode .festival-greeting p{font-size:13px!important;line-height:1.75!important;padding:11px 0 10px!important;}
+  .countdown-card.is-festival-mode .festival-greeting>span{font-size:11px!important;line-height:1.85!important;max-width:310px;}
+}
+@media(max-width:390px){
+  .countdown-card.is-festival-mode{padding:7px!important;}
+  .countdown-card.is-festival-mode .festival-greeting{padding:17px 12px 16px!important;}
+  .countdown-card.is-festival-mode .festival-greeting-glow{font-size:26px;margin-bottom:8px!important;}
+  .countdown-card.is-festival-mode .festival-greeting h2{font-size:18px!important;padding-bottom:9px!important;}
+  .countdown-card.is-festival-mode .festival-greeting p{font-size:12px!important;padding:9px 0!important;}
+  .countdown-card.is-festival-mode .festival-greeting>span{font-size:10px!important;line-height:1.8!important;}
+}
+
+/* Shared sun mark: used on both the entry screen and the main radio screen. */
+.brand-sun{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:43px;height:43px;line-height:1}
+.brand-sun img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 10px rgba(242,197,107,.42))}
+.intro-topline{display:flex;align-items:center;justify-content:center;gap:9px}
+.intro-sun-mark{display:block;width:22px;height:22px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(242,197,107,.45))}
+@media(max-width:1100px) and (min-width:721px){.brand-sun{width:35px;height:35px}}
+@media(max-width:720px){.brand-sun{width:34px;height:34px}.intro-sun-mark{width:19px;height:19px}}
+@media(max-width:390px){.brand-sun{width:29px;height:29px}}

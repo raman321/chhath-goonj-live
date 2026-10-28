@@ -93,22 +93,29 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
-// Chhath 2026 countdowns, India time.
-const targets = {
-  sandhya: {
-    date: new Date("2026-11-15T17:30:00+05:30"),
-    title: "SANDHYA ARGHYA",
-    dateLabel: "15 NOV 2026",
-    when: "SUNSET",
+// Chhath countdowns: 2026 first, then roll forward to 2027 after Usha Arghya.
+// Test modes (remove the query parameter to return to the real clock):
+// ?festivalTest=before | ?festivalTest=sandhya | ?festivalTest=usha | ?festivalTest=after
+const chhathDates = {
+  2026: {
+    sandhya: { date: new Date("2026-11-15T17:30:00+05:30"), title: "SANDHYA ARGHYA", dateLabel: "15 NOV 2026", when: "SUNSET" },
+    morning: { date: new Date("2026-11-16T06:15:00+05:30"), title: "USHA ARGHYA", dateLabel: "16 NOV 2026", when: "SUNRISE" },
+    festivalStart: new Date("2026-11-15T00:00:00+05:30"),
+    festivalEnd: new Date("2026-11-16T10:00:00+05:30"),
   },
-  morning: {
-    date: new Date("2026-11-16T06:15:00+05:30"),
-    title: "USHA ARGHYA",
-    dateLabel: "16 NOV 2026",
-    when: "SUNRISE",
+  2027: {
+    sandhya: { date: new Date("2027-11-04T17:30:00+05:30"), title: "SANDHYA ARGHYA", dateLabel: "04 NOV 2027", when: "SUNSET" },
+    morning: { date: new Date("2027-11-05T06:00:00+05:30"), title: "USHA ARGHYA", dateLabel: "05 NOV 2027", when: "SUNRISE" },
+    festivalStart: new Date("2027-11-04T00:00:00+05:30"),
+    festivalEnd: new Date("2027-11-05T10:00:00+05:30"),
+  },
+  2028: {
+    sandhya: { date: new Date("2028-10-23T17:30:00+05:30"), title: "SANDHYA ARGHYA", dateLabel: "23 OCT 2028", when: "SUNSET" },
+    morning: { date: new Date("2028-10-24T06:00:00+05:30"), title: "USHA ARGHYA", dateLabel: "24 OCT 2028", when: "SUNRISE" },
+    festivalStart: new Date("2028-10-23T00:00:00+05:30"),
+    festivalEnd: new Date("2028-10-24T10:00:00+05:30"),
   },
 };
-let active = "sandhya";
 const els = {
   days: document.getElementById("days"),
   hours: document.getElementById("hours"),
@@ -118,9 +125,57 @@ const els = {
   date: document.getElementById("countdownDate"),
   when: document.getElementById("countdownWhen"),
 };
+const countdownCard = document.querySelector(".countdown-card");
+const greeting = document.getElementById("festivalGreeting");
+const festivalScreenFallers = document.getElementById("festivalScreenFallers");
+const testFestivalMode = new URLSearchParams(location.search).get("festivalTest");
+let active = "sandhya";
+let displayedYear = 2026;
+
+function createFestivalFallers() {
+  if (!festivalScreenFallers || festivalScreenFallers.childElementCount) return;
+  // Petals first, with a few tiny golden glints for a soft devotional feel.
+  const symbols = ["🌺", "🌼", "🌸", "✦", "✨", "🌼", "🌺", "✧"];
+  const count = matchMedia("(max-width: 720px)").matches ? 20 : 38;
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < count; i++) {
+    const item = document.createElement("i");
+    item.className = "festival-screen-faller";
+    item.dataset.petal = symbols[i % symbols.length].includes("🌺") || symbols[i % symbols.length].includes("🌼") || symbols[i % symbols.length].includes("🌸") ? "flower" : "sparkle";
+    item.textContent = symbols[i % symbols.length];
+    item.style.setProperty("--left", `${Math.random() * 100}%`);
+    item.style.setProperty("--size", `${8 + Math.random() * 13}px`);
+    item.style.setProperty("--duration", `${10 + Math.random() * 11}s`);
+    item.style.setProperty("--delay", `${Math.random() * -19}s`);
+    item.style.setProperty("--drift", `${Math.round(Math.random() * 170 - 85)}px`);
+    item.style.setProperty("--spin", `${Math.round(Math.random() * 520 - 260)}deg`);
+    item.style.setProperty("--sway", `${Math.round(Math.random() * 34 - 17)}px`);
+    fragment.appendChild(item);
+  }
+  festivalScreenFallers.appendChild(fragment);
+}
+createFestivalFallers();
+
+function getFestivalState(now = new Date()) {
+  if (testFestivalMode === "sandhya" || testFestivalMode === "usha") return { festival: true, year: 2026, test: testFestivalMode, phase: testFestivalMode };
+  if (testFestivalMode === "after") return { festival: false, year: 2027, test: testFestivalMode, phase: "" };
+  if (testFestivalMode === "before") return { festival: false, year: 2026, test: testFestivalMode, phase: "" };
+  for (const year of [2026, 2027, 2028]) {
+    const data = chhathDates[year];
+    if (now >= data.festivalStart && now < data.festivalEnd) {
+      const phase = now >= data.morning.date ? "usha" : "sandhya";
+      return { festival: true, year, test: "", phase };
+    }
+    if (now < data.festivalStart) return { festival: false, year, test: "" };
+  }
+  return { festival: false, year: 2028, test: "" };
+}
+
 function selectTarget(name) {
   active = name;
-  const t = targets[name];
+  const state = getFestivalState();
+  displayedYear = state.year;
+  const t = chhathDates[displayedYear][name];
   els.title.textContent = t.title;
   els.date.textContent = t.dateLabel;
   els.when.textContent = t.when;
@@ -131,24 +186,45 @@ function selectTarget(name) {
   });
   updateCountdown();
 }
+
 function updateCountdown() {
-  let diff = Math.max(0, targets[active].date - Date.now());
+  const now = new Date();
+  const state = getFestivalState(now);
+  displayedYear = state.year;
+  countdownCard?.classList.toggle("is-festival-mode", state.festival);
+  document.body.classList.toggle("is-chhath-festival", state.festival);
+  document.body.classList.toggle("is-sandhya-arghya", state.festival && state.phase === "sandhya");
+  document.body.classList.toggle("is-usha-arghya", state.festival && state.phase === "usha");
+  if (greeting) greeting.hidden = !state.festival;
+  if (festivalScreenFallers) festivalScreenFallers.hidden = !state.festival;
+  if (state.festival) return;
+
+  const target = chhathDates[displayedYear][active];
+  if (els.title.textContent !== target.title || els.date.textContent !== target.dateLabel) {
+    els.title.textContent = target.title;
+    els.date.textContent = target.dateLabel;
+    els.when.textContent = target.when;
+    document.querySelectorAll(".countdown-tab").forEach((btn) => {
+      const selected = btn.dataset.target === active;
+      btn.classList.toggle("active", selected);
+      btn.setAttribute("aria-pressed", String(selected));
+    });
+  }
+  let diff = Math.max(0, target.date - now);
   const d = Math.floor(diff / 86400000);
   diff %= 86400000;
   const h = Math.floor(diff / 3600000);
   diff %= 3600000;
   const m = Math.floor(diff / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
+  const sec = Math.floor((diff % 60000) / 1000);
   els.days.textContent = String(d).padStart(2, "0");
   els.hours.textContent = String(h).padStart(2, "0");
   els.minutes.textContent = String(m).padStart(2, "0");
-  els.seconds.textContent = String(s).padStart(2, "0");
+  els.seconds.textContent = String(sec).padStart(2, "0");
 }
-document
-  .querySelectorAll(".countdown-tab")
-  .forEach((btn) =>
-    btn.addEventListener("click", () => selectTarget(btn.dataset.target)),
-  );
+document.querySelectorAll(".countdown-tab").forEach((btn) =>
+  btn.addEventListener("click", () => selectTarget(btn.dataset.target)),
+);
 selectTarget("sandhya");
 setInterval(updateCountdown, 1000);
 
@@ -240,7 +316,12 @@ setInterval(showStory, 8500);
   let player = null,
     ready = false,
     progressTimer = null,
-    suppressSeek = false;
+    suppressSeek = false,
+    screen2EnteredAt = 0,
+    autoplayTimer = null,
+    songIds = [],
+    songTitles = [],
+    songArtists = [];
 
   const formatTime = (seconds) => {
     const value = Math.max(0, Math.floor(Number(seconds) || 0));
@@ -296,9 +377,135 @@ setInterval(showStory, 8500);
     );
     updateProgress();
   };
-  const nextPlayable = () => {
-    if (player && ready) player.nextVideo();
+  const playlistIndex = () => {
+    if (!player || !ready) return 0;
+    const ids = player.getPlaylist?.() || [];
+    const current = Number(player.getPlaylistIndex?.());
+    return current >= 0 ? current : 0;
   };
+  const playIndex = (index) => {
+    if (!player || !ready) return;
+    const ids = player.getPlaylist?.() || [];
+    if (!ids.length) return;
+    const wrapped = ((index % ids.length) + ids.length) % ids.length;
+    player.playVideoAt(wrapped);
+    setTimeout(() => updateTrackInfo(), 180);
+    setTimeout(() => updateTrackInfo(), 700);
+  };
+  const nextPlayable = () => {
+    if (player && ready) playIndex(playlistIndex() + 1);
+  };
+
+  const songsModal = document.getElementById("songsModal");
+  const openSongsButton = document.getElementById("openSongs");
+  const songList = document.getElementById("songList");
+  const songListStatus = document.getElementById("songListStatus");
+  const openSongsModal = () => {
+    if (!songsModal) return;
+    songsModal.hidden = false;
+    document.body.classList.add("modal-open");
+    loadSongList();
+  };
+  const closeSongsModal = () => {
+    if (songsModal) songsModal.hidden = true;
+    document.body.classList.remove("modal-open");
+  };
+  openSongsButton?.addEventListener("click", openSongsModal);
+  songsModal?.addEventListener("click", (event) => {
+    if (event.target === songsModal) closeSongsModal();
+  });
+  document.querySelectorAll('[data-close="songsModal"]').forEach((button) =>
+    button.addEventListener("click", closeSongsModal)
+  );
+
+  const cleanSongTitle = (rawTitle) => {
+    return String(rawTitle || "छठ गीत")
+      .replace(/\s*\|\s*(official|full|video|audio|lyrical).*$/i, "")
+      .replace(/\s*[-–—]\s*(official music video|official video|full video|video song|audio song|lyrics|4k|hd).*$/i, "")
+      .replace(/\s*\((official|full|video|audio|lyrics|4k|hd).*?\)\s*/ig, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  };
+
+  const renderSongList = () => {
+    if (!songList || !songIds.length) return;
+    const fragment = document.createDocumentFragment();
+    songIds.forEach((id, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "song-list-item";
+      button.setAttribute("role", "listitem");
+      button.innerHTML = `<span class="song-list-number">${String(index + 1).padStart(2, "0")}</span><span class="song-list-copy"><strong class="song-list-title"></strong><small class="song-list-artist"></small></span><span class="song-list-play" aria-hidden="true">▶</span>`;
+      button.querySelector(".song-list-title").textContent = songTitles[index] || `छठ गीत ${index + 1}`;
+      button.querySelector(".song-list-artist").textContent = songArtists[index] || "छठ गीत";
+      button.addEventListener("click", () => {
+        playIndex(index);
+        closeSongsModal();
+      });
+      fragment.appendChild(button);
+    });
+    songList.replaceChildren(fragment);
+    if (songListStatus) songListStatus.textContent = `${songIds.length} गीत`;
+  };
+
+  let songListLoading = false;
+  const loadSongList = async () => {
+    if (!player || !ready || !songList) {
+      if (songListStatus) songListStatus.textContent = "प्लेयर तैयार हो रहा है…";
+      return;
+    }
+    const currentIds = player.getPlaylist?.() || [];
+    if (currentIds.length) songIds = currentIds.slice();
+    if (!songIds.length) {
+      if (songListStatus) songListStatus.textContent = "गीतों की सूची लोड हो रही है…";
+      setTimeout(loadSongList, 700);
+      return;
+    }
+    renderSongList();
+    if (songListLoading || songTitles.length === songIds.length) return;
+    songListLoading = true;
+    if (songListStatus) songListStatus.textContent = "गीतों के नाम लोड हो रहे हैं…";
+    songTitles = songIds.map((_, i) => `छठ गीत ${i + 1}`);
+    songArtists = songIds.map(() => "छठ गीत");
+    renderSongList();
+    // Fetch metadata in small batches to avoid sending a burst of requests.
+    for (let start = 0; start < songIds.length; start += 6) {
+      const batch = songIds.slice(start, start + 6);
+      await Promise.all(batch.map(async (videoId, offset) => {
+        const index = start + offset;
+        try {
+          const response = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}&format=json`);
+          if (!response.ok) return;
+          const info = await response.json();
+          if (info.title) songTitles[index] = cleanSongTitle(info.title);
+          if (info.author_name) songArtists[index] = info.author_name;
+        } catch {
+          // If YouTube doesn't provide metadata, keep the numbered song entry.
+        }
+      }));
+      renderSongList();
+    }
+    songListLoading = false;
+    renderSongList();
+  };
+
+  const scheduleAutoplay = () => {
+    if (!screen2EnteredAt || !player || !ready) return;
+    clearTimeout(autoplayTimer);
+    const remaining = Math.max(0, 2300 - (Date.now() - screen2EnteredAt));
+    autoplayTimer = setTimeout(() => {
+      if (!player || !ready) return;
+      try {
+        if (player.getPlayerState() !== YT.PlayerState.PLAYING) player.playVideo();
+      } catch (error) {
+        console.info("Autoplay may require a user tap in this browser.", error);
+      }
+    }, remaining);
+  };
+  window.addEventListener("chhath:screen2-enter", () => {
+    screen2EnteredAt = Date.now();
+    scheduleAutoplay();
+  });
 
   const onReady = () => {
     const iframe = player.getIframe && player.getIframe();
@@ -317,7 +524,9 @@ setInterval(showStory, 8500);
     setButtonState(false);
     setTimeout(() => updateTrackInfo(), 350);
     setTimeout(() => updateTrackInfo(), 1200);
+    setTimeout(loadSongList, 500);
     updateProgress();
+    scheduleAutoplay();
   };
   const onStateChange = (event) => {
     if (event.data === YT.PlayerState.PLAYING) {
@@ -385,18 +594,10 @@ setInterval(showStory, 8500);
       : player.playVideo();
   });
   prevBtn.addEventListener("click", () => {
-    if (player && ready) {
-      player.previousVideo();
-      setTimeout(() => updateTrackInfo(), 180);
-      setTimeout(() => updateTrackInfo(), 700);
-    }
+    if (player && ready) playIndex(playlistIndex() - 1);
   });
   nextBtn.addEventListener("click", () => {
-    if (player && ready) {
-      player.nextVideo();
-      setTimeout(() => updateTrackInfo(), 180);
-      setTimeout(() => updateTrackInfo(), 700);
-    }
+    if (player && ready) playIndex(playlistIndex() + 1);
   });
   backBtn.addEventListener("click", () => seekBy(-10));
   forwardBtn.addEventListener("click", () => seekBy(10));
@@ -599,6 +800,9 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     shareModal.hidden = true;
     donateModal.hidden = true;
+    const songsModal = document.getElementById("songsModal");
+    if (songsModal) songsModal.hidden = true;
+    document.body.classList.remove("modal-open");
   }
 });
 document.getElementById("copyLink").addEventListener("click", async () => {
